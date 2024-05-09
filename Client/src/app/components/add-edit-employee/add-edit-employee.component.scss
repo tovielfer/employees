@@ -1,0 +1,15 @@
+* {
+  direction: rtl;
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#form{
+  max-width: 30%;
+  margin-left: 35%;
+  padding-top: 80px;
+}

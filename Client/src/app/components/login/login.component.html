@@ -1,0 +1,31 @@
+<div id="loginFormDiv">
+    <form *ngIf="this.loginForm" [formGroup]="loginForm" id="loginForm">
+        <mat-form-field>
+            <input matInput type="text" placeholder="שם משתמש" name="userName" formControlName="userName" />
+        </mat-form-field>
+        <ng-container *ngIf="this.loginForm.controls['userName'].errors && this.loginForm.controls['userName'].touched">
+            <div *ngIf="!loginForm.controls['userName'].errors['required'] && !loginForm.controls['userName'].errors['minLength']"
+                style="color: red;">
+                אורך מינימלי הוא 3 תווים</div>
+            <div *ngIf="loginForm.controls['userName'].errors['required']" style="color: red;">זהו שדה חובה</div>
+        </ng-container>
+        <mat-form-field>
+            <input matInput [type]="hide ? 'password' : 'text'" placeholder="סיסמא" formControlName="password">
+            <button mat-icon-button matSuffix (click)="hide = !hide" [disabled]="loginForm.controls['password'].errors"
+                [attr.aria-label]="'הסתר סיסמה'" [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </mat-form-field>
+        <ng-container *ngIf="this.loginForm.controls['password'].errors && this.loginForm.controls['password'].touched">
+            <div *ngIf="!loginForm.controls['password'].errors['required'] && !loginForm.controls['password'].errors['minLength']"
+                style="color: red;">
+                אורך מינימלי הוא 3 תווים</div>
+            <div *ngIf="loginForm.controls['password'].errors['required']" style="color: red;">זהו שדה חובה</div>
+        </ng-container>
+        <div id="saveDiv">
+            <button mat-fab extended type="submit" (click)="loginUser()" [disabled]="!loginForm.valid">
+                <mat-icon>login</mat-icon>
+                התחבר</button>
+        </div>
+    </form>
+</div>

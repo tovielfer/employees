@@ -1,0 +1,139 @@
+<form [formGroup]="employeeForm" class="dialog-content" id="form">
+    <mat-card>
+        <mat-card-title style="text-align: center; font-weight: bold; font-size: 180%; margin-bottom: 10%;">פרטי
+            העובד:</mat-card-title>
+        <mat-card-content>
+            <div>
+                <mat-form-field appearance="fill">
+                    <mat-label>מספר זהות:</mat-label>
+                    <input matInput id="tz" formControlName="tz" required>
+                </mat-form-field>
+                <ng-container *ngIf="employeeForm.get('tz').invalid && employeeForm.get('tz').touched"
+                    style="color: red;">
+                    <div *ngIf="employeeForm.get('tz').errors['required']">זהו שדה חובה
+                    </div>
+                    <div
+                        *ngIf="employeeForm.get('tz').errors['minlength'] || employeeForm.get('tz').errors['maxlength']">
+                        על מ.ז. להיות באורך 9 ספרות
+                    </div>
+                </ng-container>
+            </div>
+            <br />
+            <div>
+                <mat-form-field appearance="fill">
+                    <mat-label>שם פרטי:</mat-label>
+                    <input matInput id="firstName" formControlName="firstName" required>
+                </mat-form-field>
+                <ng-container *ngIf="employeeForm.get('firstName').invalid && employeeForm.get('firstName').touched"
+                    style="color: red;">
+                    <div>זהו שדה חובה</div>
+                </ng-container>
+            </div>
+            <br />
+            <div>
+                <mat-form-field appearance="fill">
+                    <mat-label>שם משפחה:</mat-label>
+                    <input matInput id="lastName" formControlName="lastName" required>
+                </mat-form-field>
+                <ng-container *ngIf="employeeForm.get('lastName').invalid && employeeForm.get('lastName').touched"
+                    style="color: red;">
+                    <div>זהו שדה חובה</div>
+                </ng-container>
+            </div>
+            <br />
+            <div>
+                <mat-form-field appearance="fill">
+                    <mat-label>תאריך התחלה:</mat-label>
+                    <input matInput type="date" id="entryDate" formControlName="entryDate" required>
+                </mat-form-field>
+                <ng-container *ngIf="employeeForm.get('entryDate').invalid && employeeForm.get('entryDate').touched"
+                    style="color: red;">
+                    <div>זהו שדה חובה</div>
+                </ng-container>
+            </div>
+            <br />
+            <div>
+                <mat-form-field appearance="fill">
+                    <mat-label>תאריך לידה:</mat-label>
+                    <input matInput type="date" id="birthDate" formControlName="birthDate" required>
+                </mat-form-field>
+                <ng-container *ngIf="employeeForm.get('birthDate').invalid && employeeForm.get('birthDate').touched"
+                    style="color: red;">
+                    <div>זהו שדה חובה</div>
+                </ng-container>
+            </div>
+            <br />
+            <div>
+                <mat-label>מין:</mat-label>
+                <br />
+                <mat-radio-group id="kindOf" formControlName="kindOf">
+                    <mat-radio-button [value]="0">זכר</mat-radio-button>
+                    <br />
+                    <mat-radio-button [value]="1">נקבה</mat-radio-button>
+                </mat-radio-group>
+                <ng-container *ngIf="employeeForm.get('kindOf').invalid" style="color: red;">
+                    <div>זהו שדה חובה</div>
+                </ng-container>
+            </div>
+            <mat-card *ngIf="myRoles.length > 0">
+                <mat-card-title style="text-align: center;"> תפקידים של העובד:</mat-card-title>
+                <mat-card-content>
+                    <mat-chip-listbox>
+                        <mat-chip style="padding-right: 10px;" *ngFor="let role of myRoles"
+                            (removed)="removeRole(role.role)">
+                            {{ role.role.name }}
+                            <mat-icon matChipRemove>cancel</mat-icon>
+                        </mat-chip>
+                    </mat-chip-listbox>
+                </mat-card-content>
+            </mat-card>
+            <br />
+            <mat-card>
+                <mat-card-title style="text-align: center;"> תפקידים אפשריים:</mat-card-title>
+                <mat-card-content>
+                    <mat-chip-listbox>
+                        <div *ngFor="let availableRole of availableRoles; let i=index">
+                            <mat-chip style="padding-right: 10px;">
+                                {{ availableRole.name }}
+                                <button mat-icon-button matChipRemove (click)="openDateInput(i)">
+                                    <mat-icon>add</mat-icon>
+                                </button>
+                            </mat-chip>
+                            <div *ngIf="showDateInput == i">
+                                <mat-form-field appearance="fill">
+                                    <mat-label>תאריך כניסה לתפקיד:</mat-label>
+                                    <input matInput type="date" [(ngModel)]="roleStartDate"
+                                        [ngModelOptions]="{standalone: true}" required>
+                                </mat-form-field>
+                                <button mat-button (click)="addRole(availableRole)" [disabled]="!roleStartDate">אישור
+                                    <mat-icon>done</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </mat-chip-listbox>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button (click)="showAddRoleForm()" mat-flat-button
+                        style="background-color: #ff4081; color: white;">
+                        להוספת תפקיד לרשימת התפקידים
+                        <mat-icon style="margin: 4px;">add</mat-icon>
+                    </button>
+                </mat-card-actions>
+            </mat-card>
+        </mat-card-content>
+        <mat-card-actions>
+            <br />
+            <button mat-flat-button mat-raised-button color="primary"
+                style="margin-left: 5px; margin-right: 30%; right: 0; width: 20%;" type="submit" (click)="onSubmit()"
+                [disabled]="!employeeForm.valid">
+                <mat-icon style="padding-left: 30px;">save</mat-icon>
+                שמור
+            </button>
+            <button mat-flat-button mat-raised-button color="warn" type="button"
+                style="margin-right: 5px; margin-left: 30%; left: 0; width: 20%;" (click)="cancel()">
+                <mat-icon style="padding-left: 30px;">cancel</mat-icon>
+                ביטול
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</form>

@@ -1,0 +1,19 @@
+<form [formGroup]="roleForm">
+  <mat-form-field appearance="fill">
+    <mat-label>שם תפקיד:</mat-label>
+    <input matInput id="name" formControlName="name" required>
+  </mat-form-field>
+  <ng-container *ngIf="roleForm.get('name').invalid && roleForm.get('name').touched" style="color: red;">
+    <div>זהו שדה חובה</div>
+  </ng-container>
+  <br />
+  <mat-label>האם התפקיד ניהולי?</mat-label>
+  <br />
+  <mat-radio-group id="isAdminstrative" formControlName="isAdminstrative">
+    <mat-radio-button value="true">כן</mat-radio-button>
+    <br />
+    <mat-radio-button value="false">לא</mat-radio-button>
+  </mat-radio-group>
+  <br />
+  <button [disabled]="!roleForm.valid" (click)="addRole()" mat-flat-button>שמור תפקיד</button>
+</form>

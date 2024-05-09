@@ -1,0 +1,41 @@
+<h2 style="text-align: center; font-weight: bold; font-size: 300%; padding-top: 80px; ">רשימת העובדים
+</h2>
+<button (click)="exportToExcel()" class="excel" mat-flat-button style="font-weight: bolder;">
+  יצא לקובץ Excel
+</button>
+  <div class="search-field">
+    <mat-form-field appearance="fill">
+      <mat-label>Search</mat-label>
+      <input matInput type="text" [(ngModel)]="pattern" placeholder="הקלד לחיפוש">
+      <button mat-button matSuffix><mat-icon>search</mat-icon></button>
+    </mat-form-field>
+  </div>
+  <table class="employees-table">
+    <thead>
+      <tr>
+        <th>שם פרטי</th>
+        <th>שם משפחה</th>
+        <th>מספר זהות</th>
+        <th>תאריך תחילת העבודה</th>
+        <th>פעולות</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let employee of employees">
+        <tr *ngIf="filter(employee)">
+          <td>{{ employee.firstName }}</td>
+          <td>{{ employee.lastName }}</td>
+          <td>{{ employee.tz }}</td>
+          <td>{{ employee.entryDate}}</td>
+          <td>
+            <button mat-icon-button (click)="editEmployee(employee)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="deleteEmployee(employee)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
